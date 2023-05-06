@@ -3,6 +3,7 @@ package com.example.myshop;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myshop.application.HomeApplication;
 import com.example.myshop.category.CategoriesAdapter;
+import com.example.myshop.category.CategoryCreateActivity;
 import com.example.myshop.constants.Urls;
 import com.example.myshop.dto.category.CategoryItemDTO;
 import com.example.myshop.service.CategoryNetwork;
@@ -68,6 +70,26 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClickDelete(CategoryItemDTO category) {
-        Toast.makeText(this, "Видаємо "+ category.getId(), Toast.LENGTH_SHORT).show();
+        CategoryNetwork.getInstance()
+                .getJsonApi()
+                .delete(category.getId())
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if(response.isSuccessful()) {
+                            Toast.makeText(MainActivity.this,
+                                    "Категорію видалено "+ category.getName(),
+                                    Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
     }
 }

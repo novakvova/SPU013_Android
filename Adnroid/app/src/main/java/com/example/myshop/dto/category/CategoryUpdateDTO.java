@@ -1,10 +1,19 @@
 package com.example.myshop.dto.category;
 
-public class CategoryCreateDTO {
+public class CategoryUpdateDTO {
+    private int id;
     private String name;
     private String imageBase64;
     private int priority;
     private String description;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
