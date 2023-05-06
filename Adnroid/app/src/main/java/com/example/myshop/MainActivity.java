@@ -12,10 +12,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myshop.application.HomeApplication;
 import com.example.myshop.category.CategoriesAdapter;
-import com.example.myshop.category.CategoryCreateActivity;
 import com.example.myshop.constants.Urls;
 import com.example.myshop.dto.category.CategoryItemDTO;
-import com.example.myshop.service.CategoryNetwork;
+import com.example.myshop.service.ApplicationNetwork;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +49,9 @@ public class MainActivity extends BaseActivity {
     }
 
     void requestServer() {
-        CategoryNetwork
+        ApplicationNetwork
                 .getInstance()
-                .getJsonApi()
+                .getCategoriesApi()
                 .list()
                 .enqueue(new Callback<List<CategoryItemDTO>>() {
                     @Override
@@ -70,8 +69,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onClickDelete(CategoryItemDTO category) {
-        CategoryNetwork.getInstance()
-                .getJsonApi()
+        ApplicationNetwork.getInstance()
+                .getCategoriesApi()
                 .delete(category.getId())
                 .enqueue(new Callback<Void>() {
                     @Override
