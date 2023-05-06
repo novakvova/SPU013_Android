@@ -1,11 +1,11 @@
 package com.example.myshop;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
         rc = findViewById(R.id.rcvCategories);
         rc.setHasFixedSize(true);
         rc.setLayoutManager(new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false));
-        rc.setAdapter(new CategoriesAdapter(new ArrayList<>()));
+        rc.setAdapter(new CategoriesAdapter(new ArrayList<>(), MainActivity.this::onClickDelete));
 
         requestServer();
     }
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<List<CategoryItemDTO>> call, Response<List<CategoryItemDTO>> response) {
                         List<CategoryItemDTO> list = response.body();
-                        adapter = new CategoriesAdapter(list);
+                        adapter = new CategoriesAdapter(list, MainActivity.this::onClickDelete);
                         rc.setAdapter(adapter);
                     }
 
@@ -65,5 +65,9 @@ public class MainActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    private void onClickDelete(CategoryItemDTO category) {
+        Toast.makeText(this, "Видаємо "+ category.getId(), Toast.LENGTH_SHORT).show();
     }
 }
